@@ -59,6 +59,8 @@ h1,h2,h3,.display{
 
 /* ---------- ANIMATED SCENE STYLES ---------- */
 
+/* ---------- ANIMATED SCENE STYLES ---------- */
+
 .ambient {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   transition: background 1.5s ease;
@@ -88,52 +90,53 @@ h1,h2,h3,.display{
   opacity: 0.9;
 }
 
-/* Natural Uneven Grass Field */
-.natural-grass-field {
+/* Grass Layer - Wall-to-Wall Bottom Coverage & Swaying */
+.grass-container {
   position: fixed;
-  bottom: 0; left: 0; width: 100vw; height: 110px;
-  z-index: 2; pointer-events: none;
+  bottom: -2px; /* Pins seamlessly to the bottom edge */
+  left: 0;
+  width: 100vw;
+  height: 140px; /* Provides depth for the grass blades */
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.grass-svg {
-  position: absolute;
-  bottom: 0; left: 0; width: 100%; height: 100%;
+.grass-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* Wall-to-wall coverage across the bottom */
+  object-position: bottom;
+  transform-origin: bottom center; /* Grounds base while top sways */
+  animation: swayGrass 3.5s ease-in-out infinite alternate;
 }
 
-.grass-back {
-  animation: swayGrassBack 4s ease-in-out infinite alternate;
-}
-
-.grass-front {
-  animation: swayGrassFront 3s ease-in-out infinite alternate;
-}
-
-@keyframes swayGrassFront {
+@keyframes swayGrass {
   0% { transform: scaleY(1) skewX(-1.5deg); }
-  100% { transform: scaleY(1.05) skewX(2deg); }
+  100% { transform: scaleY(1.02) skewX(1.5deg); }
 }
 
-@keyframes swayGrassBack {
-  0% { transform: scaleY(1) skewX(2deg); }
-  100% { transform: scaleY(1.03) skewX(-1.5deg); }
-}
-
-/* Illustrated Girl Reading Container */
+/* Girl Lying Down Reading - 25% Smaller */
 .girl-reading-wrapper {
   position: fixed;
-  bottom: 15px;
-  right: 4%;
+  bottom: 10px;
+  right: 3%;
   z-index: 3;
   pointer-events: none;
 }
 
-.girl-reading-wrapper svg {
+.girl-img {
+  width: 130px; /* Reduced to ~25% smaller than original ~170px */
+  height: auto;
+  mix-blend-mode: multiply; /* Blends white image background into screen */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
   animation: gentleBreathe 4s ease-in-out infinite alternate;
 }
 
 @keyframes gentleBreathe {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-5px); }
+  100% { transform: translateY(-4px); }
 }
 
 /* Birds Flying */
@@ -162,8 +165,7 @@ h1,h2,h3,.display{
 @keyframes wingFlap {
   0% { transform: scaleY(1); }
   100% { transform: scaleY(-0.5); }
-}
-   /* Comments Section Styling */
+}   /* Comments Section Styling */
 .comments-container {
   margin-top: 24px;
   padding-top: 16px;
@@ -599,6 +601,7 @@ h1,h2,h3,.display{
 <!-- ---------- Animated Background Scene ---------- -->
 <!-- ---------- Animated Background Scene ---------- -->
 <!-- ---------- Animated Background Scene ---------- -->
+<!-- ---------- Animated Background Scene ---------- -->
 <div class="ambient" id="ambientBg" aria-hidden="true">
   <!-- Sun Rising Element -->
   <div class="rising-sun" id="risingSun"></div>
@@ -610,14 +613,14 @@ h1,h2,h3,.display{
     <div class="bird bird-3"></div>
   </div>
 
-  <!-- Girl Reading Image -->
+  <!-- Girl Reading Image (25% Smaller) -->
   <div class="girl-reading-wrapper">
-    <img src="girl reading.png" alt="Girl reading a book" class="girl-img" />
+    <img src="girl reading.png" onerror="this.onerror=null; this.src='girl reading.jpg';" alt="Girl reading a book" class="girl-img" />
   </div>
 
-  <!-- Animated Green Grass Image -->
+  <!-- Animated Green Grass Image (grass 1) -->
   <div class="grass-container">
-    <img src="grass.png" alt="Grass" class="grass-img" />
+    <img src="grass 1.png" onerror="this.onerror=null; this.src='grass 1.jpg';" alt="Grass" class="grass-img" />
   </div>
 </div>
 </div><!-- ============ COVER ============ -->
