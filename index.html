@@ -838,13 +838,15 @@ function openPost(index){
             <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:12px;">Leave a thought on Chapter ${index + 1}:</p>
             
             <!-- Comment Section Widget -->
-            <div id="cusdis_thread"
-              data-host="https://cusdis.com"
-              data-app-id="YOUR_CUSDIS_APP_ID"
-              data-page-id="${post.id || index}"
-              data-page-url="${window.location.href}"
-              data-page-title="${post.title}"
-            ></div>
+  <!-- Comment Section Widget -->
+<div id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="f1238cce-d24d-477c-9411-e5c37bf8fe15"
+  data-page-id="${post.id || index}"
+  data-page-url="https://dog-eared.netlify.app/#post-${post.id || index}"
+  data-page-title="${post.title}"
+></div>
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
           </div>
 
           <div class="reader-nav" style="position:absolute; bottom:30px; left:42px; right:42px;">
