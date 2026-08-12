@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reflections — a journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   EDITING YOUR BLOG — read this first
+   All of your posts live in the POSTS array near the bottom of
+   the <script> tag below. Copy an existing post's block, paste
+   it into the array, and change the text. category must be
+   exactly "travel", "nostalgia", or "rant" (this controls the
+   tab color and doodle). That's the only file you need to touch.
+   ============================================================ */
+
+:root{
+  --paper: #FBF3E4;
+  --paper-shadow: #E9DCBE;
+  --paper-deep: #F2E6C9;
+  --ink: #23304C;
+  --ink-soft: #4B5773;
+  --spine: #141E33;
+  --spine-light: #22304E;
+  --gold: #E3A13B;
+  --gold-deep: #C67F1F;
+  --teal: #2E7A6E;
+  --plum: #6E4172;
+  --coral: #D6573F;
+  --cream-hi: #FFFBF1;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Literata', serif;
+  color:var(--ink);
+  background:var(--spine);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+h1,h2,h3,.display{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+
+.hidden{display:none !important;}
+
+/* ---------- ambient background ---------- */
+.ambient{
+  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+}
+.ambient span{
+  position:absolute; border-radius:50%; filter:blur(60px); opacity:0.35;
+  animation:drift 22s ease-in-out infinite;
+}
+.ambient span:nth-child(1){width:420px; height:420px; background:var(--teal); top:-120px; left:-100px; animation-delay:0s;}
+.ambient span:nth-child(2){width:360px; height:360px; background:var(--gold); bottom:-140px; right:-80px; animation-delay:4s;}
+.ambient span:nth-child(3){width:300px; height:300px; background:var(--plum); top:40%; left:60%; animation-delay:8s;}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(30px,-40px) scale(1.08);}
+}
+
+/* ============================================================
+   COVER
+   ============================================================ */
+#cover{
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px;
+}
+.book-cover{
+  position:relative;
+  width:min(560px, 90vw);
+  aspect-ratio:3/4;
+  background:linear-gradient(160deg, var(--spine-light), var(--spine) 60%);
+  border-radius:6px 10px 10px 6px;
+  box-shadow:
+    0 30px 70px -20px rgba(0,0,0,0.7),
+    inset -10px 0 30px rgba(0,0,0,0.5),
+    inset 0 0 0 2px rgba(227,161,59,0.15);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:22px;
+  text-align:center;
+  padding:40px;
+  transition:transform 0.9s cubic-bezier(.6,.1,.2,1), opacity 0.7s ease;
+}
+.book-cover::before{
+  /* spine highlight */
+  content:''; position:absolute; left:22px; top:0; bottom:0; width:2px;
+  background:linear-gradient(180deg, transparent, rgba(227,161,59,0.4), transparent);
+}
+.book-cover::after{
+  /* page stack edge */
+  content:''; position:absolute; right:-6px; top:10px; bottom:10px; width:10px;
+  background:repeating-linear-gradient(180deg, var(--paper), var(--paper) 2px, var(--paper-shadow) 3px, var(--paper) 4px);
+  border-radius:0 4px 4px 0;
+  box-shadow:2px 0 6px rgba(0,0,0,0.3);
+}
+.cover-ornament{
+  width:64px; height:64px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--gold);
+  font-family:'Caveat', cursive;
+  font-size:1.6rem;
+}
+.cover-title{
+  font-size:clamp(2.6rem, 8vw, 4.2rem);
+  color:var(--cream-hi);
+  line-height:1;
+}
+.cover-title em{
+  color:var(--gold);
+  font-style:italic;
+  font-weight:500;
+}
+.cover-sub{
+  font-family:'Caveat', cursive;
+  font-size:1.5rem;
+  color:#C9B98A;
+  max-width:340px;
+}
+.open-btn{
+  margin-top:10px;
+  font-family:'Fraunces', serif;
+  font-size:1rem;
+  letter-spacing:0.03em;
+  background:var(--gold);
+  color:var(--spine);
+  border:none;
+  padding:14px 30px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 8px 20px -6px rgba(227,161,59,0.6);
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+.open-btn:hover, .open-btn:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px -6px rgba(227,161,59,0.8);
+}
+.open-btn:focus-visible{outline:3px solid var(--cream-hi); outline-offset:3px;}
+.edit-link{
+  position:absolute; bottom:22px; right:26px;
+  font-family:'Literata', serif; font-size:0.78rem;
+  color:#8a7c56; text-decoration:none;
+  opacity:0.7;
+}
+.edit-link:hover, .edit-link:focus-visible{opacity:1; text-decoration:underline;}
+
+.wax-seal{
+  position:absolute; bottom:-18px; right:36px;
+  width:52px; height:52px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #E2694A, var(--coral) 65%);
+  box-shadow:0 6px 14px rgba(0,0,0,0.4);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff2ea; font-family:'Fraunces', serif; font-weight:700; font-size:1rem;
+  transform:rotate(-8deg);
+}
+
+#cover.opening .book-cover{
+  transform:scale(1.15) rotateY(-8deg);
+  opacity:0;
+}
+#cover.gone{display:none;}
+
+/* ============================================================
+   BOOK SPREAD (table of contents)
+   ============================================================ */
+#book{
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:26px;
+  opacity:0;
+  animation:fadeUp 0.8s ease forwards;
+  animation-delay:0.15s;
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(18px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.spread{
+  position:relative;
+  width:min(1080px, 96vw);
+  min-height:640px;
+  background:var(--spine);
+  border-radius:10px;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,0.85);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding:14px;
+  gap:6px;
+}
+.spread::before{
+  /* center spine shadow */
+  content:''; position:absolute; left:50%; top:14px; bottom:14px; width:44px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg, transparent, rgba(0,0,0,0.35), transparent);
+  z-index:5; pointer-events:none;
+}
+.page{
+  background:var(--paper);
+  border-radius:4px;
+  padding:44px 42px;
+  position:relative;
+  box-shadow:inset 0 0 40px rgba(0,0,0,0.05);
+  overflow:hidden;
+}
+.page.left{border-radius:4px 2px 2px 4px;}
+.page.right{border-radius:2px 4px 4px 2px;}
+.page::before{
+  /* deckled paper texture edge */
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(0,0,0,0.03) 0, transparent 3px),
+    radial-gradient(circle at 92% 85%, rgba(0,0,0,0.03) 0, transparent 3px);
+  pointer-events:none;
+}
+
+.eyebrow{
+  font-family:'Caveat', cursive;
+  color:var(--gold-deep);
+  font-size:1.3rem;
+  margin-bottom:2px;
+}
+.page-heading{
+  font-size:1.9rem;
+  color:var(--ink);
+  margin-bottom:14px;
+  line-height:1.15;
+}
+.about-copy{
+  font-size:1.02rem;
+  color:var(--ink-soft);
+  line-height:1.7;
+  max-width:38ch;
+}
+.about-copy + .about-copy{margin-top:14px;}
+
+.doodle-map{
+  position:absolute; bottom:26px; left:42px; right:42px;
+  opacity:0.55;
+}
+
+.stamp{
+  position:absolute; top:38px; right:38px;
+  width:74px; height:74px;
+  border:2px dashed var(--teal);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  transform:rotate(8deg);
+  color:var(--teal);
+  font-family:'Caveat', cursive;
+  font-size:1rem;
+  text-align:center;
+  line-height:1.1;
+}
+
+.toc-list{
+  list-style:none;
+  display:flex; flex-direction:column;
+  gap:4px;
+  margin-top:6px;
+}
+.toc-entry{
+  position:relative;
+  display:flex; align-items:baseline; gap:16px;
+  padding:14px 46px 14px 4px;
+  border-bottom:1px solid rgba(35,48,76,0.12);
+  cursor:pointer;
+  background:none; border-left:none; border-right:none; border-top:none;
+  text-align:left;
+  width:100%;
+  font-family:inherit;
+  transition:padding-left 0.2s ease, background 0.2s ease;
+}
+.toc-entry:hover, .toc-entry:focus-visible{
+  padding-left:10px;
+  background:rgba(227,161,59,0.08);
+}
+.toc-entry:focus-visible{outline:2px solid var(--gold-deep); outline-offset:-2px;}
+.toc-page-num{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-weight:500;
+  color:var(--gold-deep);
+  font-size:0.95rem;
+  min-width:52px;
+}
+.toc-meta{flex:1; min-width:0;}
+.toc-title{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  font-size:1.12rem;
+  color:var(--ink);
+  margin-bottom:3px;
+}
+.toc-excerpt{
+  font-size:0.88rem;
+  color:var(--ink-soft);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.toc-date{
+  font-family:'Caveat', cursive;
+  font-size:1.1rem;
+  color:#8a7c56;
+  white-space:nowrap;
+}
+.tab{
+  position:absolute; right:-2px; top:50%; transform:translateY(-50%);
+  width:34px; height:26px;
+  border-radius:3px 6px 6px 3px;
+  box-shadow:1px 2px 5px rgba(0,0,0,0.25);
+}
+.tab.travel{background:var(--teal);}
+.tab.nostalgia{background:var(--plum);}
+.tab.rant{background:var(--coral);}
+
+.legend{
+  display:flex; gap:18px; margin-top:24px; flex-wrap:wrap;
+}
+.legend-item{
+  display:flex; align-items:center; gap:7px;
+  font-size:0.82rem; color:var(--ink-soft);
+  font-family:'Literata', serif;
+}
+.legend-dot{width:11px; height:11px; border-radius:3px;}
+.legend-dot.travel{background:var(--teal);}
+.legend-dot.nostalgia{background:var(--plum);}
+.legend-dot.rant{background:var(--coral);}
+
+.close-book-btn{
+  position:absolute; top:-46px; left:50%; transform:translateX(-50%);
+  background:none; border:1px solid rgba(255,255,255,0.25);
+  color:#d9cfae; font-family:'Literata', serif; font-size:0.85rem;
+  padding:8px 18px; border-radius:999px; cursor:pointer;
+  transition:background 0.2s ease;
+}
+.close-book-btn:hover, .close-book-btn:focus-visible{background:rgba(255,255,255,0.08);}
+
+/* ============================================================
+   READER (single post, page-turn effect)
+   ============================================================ */
+#reader{
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:26px;
+  perspective:2400px;
+}
+.reader-page{
+  width:min(760px, 96vw);
+  min-height:640px;
+  background:var(--paper);
+  border-radius:6px;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,0.85);
+  padding:56px 60px;
+  position:relative;
+  transform-origin:left center;
+  animation:pageTurnIn 0.6s cubic-bezier(.5,0,.2,1) both;
+}
+@keyframes pageTurnIn{
+  from{transform:rotateY(-95deg); opacity:0.3;}
+  to{transform:rotateY(0deg); opacity:1;}
+}
+.reader-page.leaving{
+  animation:pageTurnOut 0.45s cubic-bezier(.5,0,.2,1) both;
+}
+@keyframes pageTurnOut{
+  from{transform:rotateY(0deg); opacity:1;}
+  to{transform:rotateY(-95deg); opacity:0;}
+}
+.reader-tab{
+  position:absolute; right:-2px; top:64px;
+  width:38px; height:30px;
+  border-radius:3px 6px 6px 3px;
+  box-shadow:1px 2px 5px rgba(0,0,0,0.25);
+}
+.reader-back{
+  background:none; border:none; cursor:pointer;
+  font-family:'Fraunces', serif; font-size:0.9rem;
+  color:var(--ink-soft);
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:26px;
+  padding:6px 4px;
+}
+.reader-back:hover, .reader-back:focus-visible{color:var(--ink);}
+.reader-page-num{
+  font-family:'Fraunces', serif; font-style:italic; color:var(--gold-deep);
+  font-size:0.95rem; margin-bottom:8px;
+}
+.reader-title{
+  font-size:clamp(1.8rem, 4vw, 2.5rem);
+  color:var(--ink);
+  line-height:1.12;
+  margin-bottom:10px;
+}
+.reader-date{
+  font-family:'Caveat', cursive;
+  font-size:1.3rem;
+  color:#8a7c56;
+  margin-bottom:26px;
+}
+.reader-body p{
+  font-size:1.08rem;
+  line-height:1.85;
+  color:var(--ink);
+  margin-bottom:18px;
+  max-width:60ch;
+}
+.reader-body p:first-of-type::first-letter{
+  font-family:'Fraunces', serif;
+  font-size:3.4rem;
+  font-weight:600;
+  float:left;
+  line-height:0.85;
+  padding-right:8px;
+  padding-top:4px;
+  color:var(--gold-deep);
+}
+.reader-doodle{
+  margin:8px 0 22px 0;
+  opacity:0.9;
+}
+.reader-photo{
+  width:100%; max-height:340px; object-fit:cover;
+  border-radius:4px; margin-bottom:24px;
+  box-shadow:0 10px 24px -10px rgba(0,0,0,0.35);
+}
+.load-state{
+  color:var(--cream-hi); font-family:'Caveat', cursive; font-size:1.4rem;
+  text-align:center; padding-top:120px;
+}
+.reader-nav{
+  display:flex; justify-content:space-between; margin-top:36px;
+  padding-top:20px; border-top:1px solid rgba(35,48,76,0.12);
+}
+.reader-nav button{
+  background:none; border:none; cursor:pointer;
+  font-family:'Literata', serif; font-size:0.92rem;
+  color:var(--ink-soft);
+  display:flex; align-items:center; gap:6px;
+}
+.reader-nav button:hover, .reader-nav button:focus-visible{color:var(--ink);}
+.reader-nav button:disabled{opacity:0.3; cursor:default;}
+.reader-nav button:disabled:hover{color:var(--ink-soft);}
+
+/* ---------- responsive ---------- */
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr; min-height:auto;}
+  .spread::before{display:none;}
+  .page.left{display:none;}
+  .page.right{border-radius:4px;}
+  .reader-page{padding:38px 26px;}
+  .stamp{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<!-- ============ COVER ============ -->
+<section id="cover">
+  <div class="book-cover">
+    <div class="cover-ornament">✦</div>
+    <h1 class="cover-title">reflections<br><em>a journal</em></h1>
+    <p class="cover-sub">travel, nostalgia, and the occasional rant</p>
+    <button class="open-btn" id="openBookBtn">Open the book</button>
+    <div class="wax-seal">S</div>
+  </div>
+  <a href="/admin/" class="edit-link">write a new entry</a>
+</section>
+
+<!-- ============ BOOK / TABLE OF CONTENTS ============ -->
+<section id="book" class="hidden">
+  <div style="position:relative;">
+    <button class="close-book-btn" id="closeBookBtn">← close the book</button>
+    <div class="spread">
+      <div class="page left">
+        <p class="eyebrow">from the author</p>
+        <h2 class="page-heading" id="aboutHeading">Hi, I'm keeping this journal.</h2>
+        <p class="about-copy" id="aboutPara1"></p>
+        <p class="about-copy" id="aboutPara2"></p>
+        <div class="stamp">est.<br>2026</div>
+        <svg class="doodle-map" viewBox="0 0 300 60" width="100%" height="60" aria-hidden="true">
+          <path d="M10 40 Q 60 10, 100 35 T 190 25 T 290 45" fill="none" stroke="#C9B98A" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round"/>
+          <circle cx="10" cy="40" r="4" fill="#2E7A6E"/>
+          <circle cx="150" cy="28" r="4" fill="#D6573F"/>
+          <circle cx="290" cy="45" r="4" fill="#6E4172"/>
+        </svg>
+      </div>
+      <div class="page right">
+        <p class="eyebrow">table of contents</p>
+        <h2 class="page-heading">Entries</h2>
+        <ul class="toc-list" id="tocList"></ul>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot travel"></span>travel</div>
+          <div class="legend-item"><span class="legend-dot nostalgia"></span>nostalgia</div>
+          <div class="legend-item"><span class="legend-dot rant"></span>rant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ READER ============ -->
+<section id="reader" class="hidden"></section>
+
+<script>
+/* ============================================================
+   Posts and about text are no longer written in this file.
+   They live in content/posts.json and content/about.json,
+   which you edit through the CMS at yoursite.com/admin
+   ============================================================ */
+let POSTS = [];
+
+function slugify(title){
+  return title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+async function loadContent(){
+  try{
+    const [aboutRes, postsRes] = await Promise.all([
+      fetch('content/about.json', { cache: 'no-store' }),
+      fetch('content/posts.json', { cache: 'no-store' })
+    ]);
+    const about = await aboutRes.json();
+    const postsData = await postsRes.json();
+
+    document.getElementById('aboutHeading').textContent = about.heading || '';
+    document.getElementById('aboutPara1').textContent = about.paragraph1 || '';
+    document.getElementById('aboutPara2').textContent = about.paragraph2 || '';
+
+    POSTS = (postsData.posts || []).map(p => ({ ...p, id: slugify(p.title) }));
+    renderTOC();
+  }catch(err){
+    document.getElementById('tocList').innerHTML =
+      '<li class="load-state" style="color:var(--ink-soft);">Couldn\'t load entries right now. Try refreshing.</li>';
+  }
+}
+
+const CATEGORY_LABEL = { travel: "travel", nostalgia: "nostalgia", rant: "rant" };
+const CATEGORY_DOODLE = {
+  travel: `<svg width="72" height="40" viewBox="0 0 72 40" aria-hidden="true"><path d="M4 30 Q20 8 36 20 T68 12" fill="none" stroke="#2E7A6E" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="30" r="3" fill="#2E7A6E"/><circle cx="68" cy="12" r="3" fill="#2E7A6E"/></svg>`,
+  nostalgia: `<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="16" fill="none" stroke="#6E4172" stroke-width="2"/><line x1="22" y1="22" x2="22" y2="12" stroke="#6E4172" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="22" x2="29" y2="26" stroke="#6E4172" stroke-width="2" stroke-linecap="round"/></svg>`,
+  rant: `<svg width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><path d="M8 20 Q4 8 14 6 Q10 2 18 2 Q30 0 32 12 Q42 12 40 22 Q44 30 34 30 Q30 38 20 32 Q8 36 8 26 Z" fill="none" stroke="#D6573F" stroke-width="2"/></svg>`
+};
+
+let currentIndex = 0;
+
+function renderTOC(){
+  const list = document.getElementById('tocList');
+  list.innerHTML = '';
+  POSTS.forEach((post, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <button class="toc-entry" data-index="${i}" aria-label="Read ${post.title}">
+        <span class="toc-page-num">Pg. ${post.pageNum}</span>
+        <span class="toc-meta">
+          <span class="toc-title">${post.title}</span>
+          <span class="toc-excerpt">${post.excerpt}</span>
+        </span>
+        <span class="toc-date">${post.date}</span>
+        <span class="tab ${post.category}"></span>
+      </button>`;
+    list.appendChild(li);
+  });
+  list.querySelectorAll('.toc-entry').forEach(btn => {
+    btn.addEventListener('click', () => openPost(parseInt(btn.dataset.index)));
+  });
+}
+
+function openPost(index){
+  currentIndex = index;
+  const post = POSTS[index];
+  const reader = document.getElementById('reader');
+  const paragraphs = post.content.map(p => `<p>${p}</p>`).join('');
+  const photo = post.image ? `<img class="reader-photo" src="${post.image}" alt="">` : '';
+  reader.innerHTML = `
+    <article class="reader-page" id="readerPage">
+      <span class="reader-tab ${post.category}"></span>
+      <button class="reader-back" id="readerBack">← back to the book</button>
+      <p class="reader-page-num">Page ${post.pageNum} · ${CATEGORY_LABEL[post.category]}</p>
+      <h2 class="reader-title">${post.title}</h2>
+      <p class="reader-date">${post.date}</p>
+      ${photo}
+      <div class="reader-doodle">${CATEGORY_DOODLE[post.category]}</div>
+      <div class="reader-body">${paragraphs}</div>
+      <div class="reader-nav">
+        <button id="prevPost" ${index === 0 ? 'disabled' : ''}>← previous entry</button>
+        <button id="nextPost" ${index === POSTS.length - 1 ? 'disabled' : ''}>next entry →</button>
+      </div>
+    </article>`;
+  document.getElementById('book').classList.add('hidden');
+  reader.classList.remove('hidden');
+  document.getElementById('readerBack').addEventListener('click', closeReader);
+  const prevBtn = document.getElementById('prevPost');
+  const nextBtn = document.getElementById('nextPost');
+  if(prevBtn) prevBtn.addEventListener('click', () => turnPage(index - 1));
+  if(nextBtn) nextBtn.addEventListener('click', () => turnPage(index + 1));
+  reader.scrollIntoView({ behavior:'instant', block:'start' });
+}
+
+function turnPage(newIndex){
+  if(newIndex < 0 || newIndex >= POSTS.length) return;
+  const current = document.getElementById('readerPage');
+  current.classList.add('leaving');
+  setTimeout(() => openPost(newIndex), 420);
+}
+
+function closeReader(){
+  document.getElementById('reader').classList.add('hidden');
+  document.getElementById('reader').innerHTML = '';
+  document.getElementById('book').classList.remove('hidden');
+}
+
+document.getElementById('openBookBtn').addEventListener('click', () => {
+  const cover = document.getElementById('cover');
+  cover.classList.add('opening');
+  setTimeout(() => {
+    cover.classList.add('gone');
+    document.getElementById('book').classList.remove('hidden');
+  }, 550);
+});
+
+document.getElementById('closeBookBtn').addEventListener('click', () => {
+  document.getElementById('book').classList.add('hidden');
+  document.getElementById('cover').classList.remove('opening','gone');
+  document.getElementById('cover').scrollIntoView({behavior:'instant'});
+});
+
+loadContent();
+
+/* Lets a "write a new entry" click take you straight to login,
+   and sends you back to the editor after you log in the first time */
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on('init', user => {
+    if (!user) {
+      window.netlifyIdentity.on('login', () => { document.location.href = '/admin/'; });
+    }
+  });
+}
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</body>
+</html>
