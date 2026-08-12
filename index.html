@@ -472,7 +472,36 @@ h1,h2,h3,.display{
 </head>
 <body>
 
-<div class="ambient" aria-hidden="true"><span></span><span></span><span></span></div>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+<!-- ---------- Animated Background Scene ---------- -->
+<div class="ambient" aria-hidden="true">
+  <span></span><span></span><span></span>
+  
+  <!-- Birds flying in the sky -->
+  <div class="bird-container"><div class="bird"></div></div>
+  <div class="bird-container bird-2"><div class="bird"></div></div>
+
+  <!-- Girl reading on the grass -->
+  <div class="scenery-bottom">
+    <svg class="grass-field" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 Q150,20 300,50 T600,30 T900,50 T1200,20 V120 H0 Z" fill="#1b2a47" />
+      <path d="M0,80 Q200,40 400,70 T800,50 T1200,70 V120 H0 Z" fill="#141d30" />
+    </svg>
+    
+    <!-- Cozy girl reading illustration -->
+    <div class="girl-reading">
+      <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+        <!-- Grass mound -->
+        <ellipse cx="60" cy="85" rx="50" ry="10" fill="#2E7A6E" opacity="0.4"/>
+        <!-- Girl sitting/reading silhouette -->
+        <path d="M45,75 C40,65 42,50 50,42 C54,38 60,36 65,40 C70,44 68,52 65,58 C72,60 78,65 80,75 C82,82 70,85 60,85 C50,85 46,80 45,75 Z" fill="#E3A13B"/>
+        <!-- Book in hand -->
+        <path d="M62,60 L72,55 L80,62 L70,67 Z" fill="#FFFBF1"/>
+      </svg>
+    </div>
+  </div>
+</div>
 
 <!-- ============ COVER ============ -->
 <section id="cover">
