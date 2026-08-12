@@ -683,38 +683,59 @@ function openPost(index){
   currentIndex = index;
   const post = POSTS[index];
   const reader = document.getElementById('reader');
-  const paragraphs = post.content.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('');
+  const paragraphs = post.content ? post.content.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('') : '';
   const photo = post.image ? `<img class="reader-photo" src="${post.image}" alt="">` : '';
+
   reader.innerHTML = `
-    <article class="reader-page" id="readerPage">
-      <span class="reader-tab ${post.category}"></span>
-      <button class="reader-back" id="readerBack">← back to the book</button>
-      <p class="reader-page-num">Page ${post.pageNum} · ${CATEGORY_LABEL[post.category]}</p>
-      <h2 class="reader-title">${post.title}</h2>
-      <p class="reader-date">${post.date}</p>
-      ${photo}
-      <div class="reader-doodle">${CATEGORY_DOODLE[post.category]}</div>
-      <div class="reader-body">${paragraphs}</div>
-      <div class="reader-nav">
-        <button id="prevPost" ${index === 0 ? 'disabled' : ''}>← previous entry</button>
-        <button id="nextPost" ${index === POSTS.length - 1 ? 'disabled' : ''}>next entry →</button>
+    <div style="position:relative; width:100%; display:flex; flex-direction:column; align-items:center;">
+      <button class="close-book-btn" id="readerBack" style="margin-bottom:15px; position:relative; top:0; left:0; transform:none;">← back to table of contents</button>
+      
+      <div class="spread">
+        <!-- Left Page: Chapter Story -->
+        <div class="page left">
+          <span class="reader-tab ${post.category}"></span>
+          <p class="eyebrow">Chapter ${index + 1} · ${CATEGORY_LABEL[post.category] || 'entry'}</p>
+          <h2 class="reader-title">${post.title}</h2>
+          <p class="reader-date">${post.date}</p>
+          ${photo}
+          <div class="reader-doodle">${CATEGORY_DOODLE[post.category] || ''}</div>
+          <div class="reader-body">${paragraphs}</div>
+        </div>
+
+        <!-- Right Page: Continuation & Comments -->
+        <div class="page right">
+          <div class="comments-container">
+            <h3 class="comments-title">Reflections & Thoughts</h3>
+            <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:12px;">Leave a thought on Chapter ${index + 1}:</p>
+            
+            <!-- Comment Section Widget -->
+            <div id="cusdis_thread"
+              data-host="https://cusdis.com"
+              data-app-id="YOUR_CUSDIS_APP_ID"
+              data-page-id="${post.id || index}"
+              data-page-url="${window.location.href}"
+              data-page-title="${post.title}"
+            ></div>
+          </div>
+
+          <div class="reader-nav" style="position:absolute; bottom:30px; left:42px; right:42px;">
+            <button id="prevPost" ${index === 0 ? 'disabled' : ''}>← previous chapter</button>
+            <button id="nextPost" ${index === POSTS.length - 1 ? 'disabled' : ''}>next chapter →</button>
+          </div>
+        </div>
       </div>
-    </article>`;
+    </div>`;
+
   document.getElementById('book').classList.add('hidden');
   reader.classList.remove('hidden');
+  
   document.getElementById('readerBack').addEventListener('click', closeReader);
   const prevBtn = document.getElementById('prevPost');
   const nextBtn = document.getElementById('nextPost');
-  if(prevBtn) prevBtn.addEventListener('click', () => turnPage(index - 1));
-  if(nextBtn) nextBtn.addEventListener('click', () => turnPage(index + 1));
-  reader.scrollIntoView({ behavior:'instant', block:'start' });
-}
-
-function turnPage(newIndex){
-  if(newIndex < 0 || newIndex >= POSTS.length) return;
-  const current = document.getElementById('readerPage');
-  current.classList.add('leaving');
-  setTimeout(() => openPost(newIndex), 420);
+  if(prevBtn) prevBtn.addEventListener('click', () => openPost(index - 1));
+  if(nextBtn) nextBtn.addEventListener('click', () => openPost(index + 1));
+  
+  reader.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 function closeReader(){
