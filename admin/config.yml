@@ -16,18 +16,14 @@ collections:
           - label: "Entries"
             name: "posts"
             widget: "list"
-            summary: "{{title}} — {{category}}"
+            summary: "{{title}}"
             fields:
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Date shown on the page", name: "date", widget: "string", hint: "e.g. March 2026"}
-              - label: "Category"
-                name: "category"
-                widget: "select"
-                options: ["travel", "nostalgia", "rant"]
               - label: "Page number"
                 name: "pageNum"
                 widget: "number"
-                hint: "The number shown as 'Page —'. Pick anything, they don't need to be in order."
+                hint: "The number shown as 'Page —'. Pick anything; they don't need to be in order."
               - {label: "Short preview line", name: "excerpt", widget: "string"}
               - label: "Photo (optional)"
                 name: "image"
@@ -37,6 +33,7 @@ collections:
                 name: "content"
                 widget: "text"
                 hint: "Leave one blank line between paragraphs, same as writing an email."
+
   - name: "about"
     label: "About page"
     files:
