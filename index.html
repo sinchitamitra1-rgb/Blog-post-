@@ -590,14 +590,49 @@ h1,h2,h3,.display{
 .reader-nav button:disabled:hover{color:var(--ink-soft);}
 
 /* ---------- responsive ---------- */
+/* ---------- responsive & mobile view fix ---------- */
 @media (max-width:760px){
-  .spread{grid-template-columns:1fr; min-height:auto;}
-  .spread::before{display:none;}
-  .page.left{display:none;}
-  .page.right{border-radius:4px;}
+  .spread{
+    grid-template-columns:1fr !important;
+    min-height:auto !important;
+    gap:16px !important;
+    padding:10px !important;
+  }
+  .spread::before{display:none !important;}
+
+  /* THIS FIXES MOBILE: Force BOTH left (main blog content) AND right (comments) pages to display */
+  .page.left, .page.right {
+    display:block !important;
+    width:100% !important;
+    border-radius:6px !important;
+    padding:28px 20px !important;
+  }
+
   .reader-page{padding:38px 26px;}
   .stamp{display:none;}
+
+  .reader-nav {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-top: 24px !important;
+  }
+
+  .natural-grass-scene {
+    height: 110px !important;
+  }
+
+  .girl-reading-wrapper {
+    right: 2% !important;
+    bottom: 6px !important;
+  }
+
+  .girl-img {
+    width: 95px !important;
+  }
 }
+</style>
 </style>
 </head>
 <body>
