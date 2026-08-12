@@ -33,10 +33,10 @@ collections:
                 name: "image"
                 widget: "image"
                 required: false
-              - label: "Paragraphs"
+              - label: "Write your blog post here"
                 name: "content"
-                widget: "list"
-                hint: "Add one item per paragraph."
+                widget: "text"
+                hint: "Leave one blank line between paragraphs, same as writing an email."
   - name: "about"
     label: "About page"
     files:
