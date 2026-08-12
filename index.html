@@ -589,7 +589,7 @@ function openPost(index){
   currentIndex = index;
   const post = POSTS[index];
   const reader = document.getElementById('reader');
-  const paragraphs = post.content.map(p => `<p>${p}</p>`).join('');
+  const paragraphs = post.content.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('');
   const photo = post.image ? `<img class="reader-photo" src="${post.image}" alt="">` : '';
   reader.innerHTML = `
     <article class="reader-page" id="readerPage">
