@@ -55,57 +55,121 @@ h1,h2,h3,.display{
 
 .hidden{display:none !important;}
 /* ---------- ANIMATED SCENE STYLES ---------- */
-.scenery-bottom {
+/* ---------- ANIMATED SCENE STYLES ---------- */
+
+/* Lush Swaying Green Grass Layer */
+.lush-grass-layer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
-  height: 140px;
+  height: 120px;
   pointer-events: none;
   z-index: 1;
-}
-.grass-field {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-.girl-reading {
-  position: absolute;
-  bottom: 10px;
-  right: 6%;
-  animation: floatGirl 4s ease-in-out infinite alternate;
-}
-@keyframes floatGirl {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
+  overflow: hidden;
 }
 
-.bird-container {
+.grass-wave {
   position: absolute;
-  top: 15%;
-  left: -10%;
-  animation: fly 22s linear infinite;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+  background-repeat: repeat-x;
+  background-position: bottom left;
 }
-.bird-2 {
-  top: 25%;
-  animation-delay: 9s;
-  animation-duration: 28s;
+
+.grass-back {
+  background-image: repeating-linear-gradient(
+    15deg,
+    #2d6a4f 0px,
+    #2d6a4f 8px,
+    #1b4332 9px,
+    #1b4332 16px
+  );
+  height: 110px;
+  opacity: 0.85;
+  animation: swayGrassBack 4s ease-in-out infinite alternate;
 }
+
+.grass-front {
+  background-image: repeating-linear-gradient(
+    -10deg,
+    #52b788 0px,
+    #52b788 6px,
+    #40916c 7px,
+    #40916c 12px
+  );
+  height: 85px;
+  animation: swayGrassFront 3s ease-in-out infinite alternate;
+}
+
+@keyframes swayGrassFront {
+  0% { transform: translateX(0) skewX(-2deg); }
+  100% { transform: translateX(-30px) skewX(3deg); }
+}
+
+@keyframes swayGrassBack {
+  0% { transform: translateX(-20px) skewX(2deg); }
+  100% { transform: translateX(0) skewX(-3deg); }
+}
+
+/* Illustrated Girl Reading */
+.illustrated-girl-container {
+  position: fixed;
+  bottom: 25px;
+  right: 5%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.girl-illustration {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #52b788;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  animation: gentleBreathe 5s ease-in-out infinite alternate;
+}
+
+@keyframes gentleBreathe {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-6px) scale(1.02); }
+}
+
+/* Flock of Birds Flying */
+.flock {
+  position: fixed;
+  top: 12%;
+  left: -15%;
+  z-index: 1;
+  pointer-events: none;
+  animation: flyAcross 20s linear infinite;
+}
+
 .bird {
-  width: 20px;
-  height: 12px;
+  position: absolute;
+  width: 18px;
+  height: 10px;
   background: var(--gold);
-  clip-path: polygon(0 0, 50% 100%, 100% 0, 50% 40%);
-  animation: flap 0.8s ease-in-out infinite alternate;
+  clip-path: polygon(0 0, 50% 100%, 100% 0, 50% 35%);
+  animation: wingFlap 0.6s ease-in-out infinite alternate;
 }
-@keyframes fly {
-  0% { left: -10%; }
-  100% { left: 110%; }
+
+.bird-1 { top: 0; left: 0; }
+.bird-2 { top: 15px; left: 25px; animation-delay: 0.1s; }
+.bird-3 { top: -10px; left: 45px; animation-delay: 0.25s; }
+.bird-4 { top: 20px; left: 70px; animation-delay: 0.15s; }
+
+@keyframes flyAcross {
+  0% { left: -15%; top: 15%; }
+  50% { top: 10%; }
+  100% { left: 115%; top: 18%; }
 }
-@keyframes flap {
+
+@keyframes wingFlap {
   0% { transform: scaleY(1); }
-  100% { transform: scaleY(-0.5); }
+  100% { transform: scaleY(-0.6); }
 }
 
 /* Comments Section Styling */
@@ -540,34 +604,29 @@ h1,h2,h3,.display{
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
 <!-- ---------- Animated Background Scene ---------- -->
+<!-- ---------- Animated Background Scene ---------- -->
 <div class="ambient" aria-hidden="true">
   <span></span><span></span><span></span>
-  
-  <!-- Birds flying in the sky -->
-  <div class="bird-container"><div class="bird"></div></div>
-  <div class="bird-container bird-2"><div class="bird"></div></div>
 
-  <!-- Girl reading on the grass -->
-  <div class="scenery-bottom">
-    <svg class="grass-field" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,60 Q150,20 300,50 T600,30 T900,50 T1200,20 V120 H0 Z" fill="#1b2a47" />
-      <path d="M0,80 Q200,40 400,70 T800,50 T1200,70 V120 H0 Z" fill="#141d30" />
-    </svg>
-    
-    <!-- Cozy girl reading illustration -->
-    <div class="girl-reading">
-      <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
-        <!-- Grass mound -->
-        <ellipse cx="60" cy="85" rx="50" ry="10" fill="#2E7A6E" opacity="0.4"/>
-        <!-- Girl sitting/reading silhouette -->
-        <path d="M45,75 C40,65 42,50 50,42 C54,38 60,36 65,40 C70,44 68,52 65,58 C72,60 78,65 80,75 C82,82 70,85 60,85 C50,85 46,80 45,75 Z" fill="#E3A13B"/>
-        <!-- Book in hand -->
-        <path d="M62,60 L72,55 L80,62 L70,67 Z" fill="#FFFBF1"/>
-      </svg>
-    </div>
+  <!-- Flock of Birds Flying Across Sky -->
+  <div class="flock">
+    <div class="bird bird-1"></div>
+    <div class="bird bird-2"></div>
+    <div class="bird bird-3"></div>
+    <div class="bird bird-4"></div>
+  </div>
+
+  <!-- Lush Animated Green Grass Bed -->
+  <div class="lush-grass-layer">
+    <div class="grass-wave grass-back"></div>
+    <div class="grass-wave grass-front"></div>
+  </div>
+
+  <!-- Full Illustrated Girl Reading -->
+  <div class="illustrated-girl-container">
+    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80" alt="Girl reading" class="girl-illustration" />
   </div>
 </div>
-
 <!-- ============ COVER ============ -->
 <section id="cover">
   <div class="book-cover">
