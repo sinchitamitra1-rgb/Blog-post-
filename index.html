@@ -11,11 +11,8 @@
 
 /* ============================================================
    EDITING YOUR BLOG — read this first
-   All of your posts live in the POSTS array near the bottom of
-   the <script> tag below. Copy an existing post's block, paste
-   it into the array, and change the text. category must be
-   exactly "travel", "nostalgia", or "rant" (this controls the
-   tab color and doodle). That's the only file you need to touch.
+   All of your posts live in content/posts.json and content/about.json,
+   which you edit through the CMS at yoursite.com/admin
    ============================================================ */
 
 :root{
@@ -54,12 +51,6 @@ h1,h2,h3,.display{
 }
 
 .hidden{display:none !important;}
-/* ---------- ANIMATED SCENE STYLES ---------- */
-/* ---------- ANIMATED SCENE STYLES ---------- */
-
-/* ---------- ANIMATED SCENE STYLES ---------- */
-
-/* ---------- ANIMATED SCENE STYLES ---------- */
 
 /* ---------- ANIMATED SCENE STYLES ---------- */
 
@@ -129,14 +120,14 @@ h1,h2,h3,.display{
   position: absolute;
   bottom: 12px;
   right: 5%;
-  z-index: 2; /* Positioned between back and front grass layers */
+  z-index: 2;
   pointer-events: none;
 }
 
 .girl-img {
   width: 130px;
   height: auto;
-  mix-blend-mode: multiply; /* Vanishes white image background */
+  mix-blend-mode: multiply;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
   animation: gentleBreathe 4s ease-in-out infinite alternate;
 }
@@ -173,7 +164,8 @@ h1,h2,h3,.display{
   0% { transform: scaleY(1); }
   100% { transform: scaleY(-0.5); }
 }
-   /* Comments Section Styling */
+
+/* Comments Section Styling */
 .comments-container {
   margin-top: 24px;
   padding-top: 16px;
@@ -185,10 +177,8 @@ h1,h2,h3,.display{
   color: var(--ink);
   margin-bottom: 8px;
 }
-/* ---------- ambient background ---------- */
-.ambient{
-  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-}
+
+/* Ambient Background Blobs */
 .ambient span{
   position:absolute; border-radius:50%; filter:blur(60px); opacity:0.35;
   animation:drift 22s ease-in-out infinite;
@@ -227,12 +217,10 @@ h1,h2,h3,.display{
   transition:transform 0.9s cubic-bezier(.6,.1,.2,1), opacity 0.7s ease;
 }
 .book-cover::before{
-  /* spine highlight */
   content:''; position:absolute; left:22px; top:0; bottom:0; width:2px;
   background:linear-gradient(180deg, transparent, rgba(227,161,59,0.4), transparent);
 }
 .book-cover::after{
-  /* page stack edge */
   content:''; position:absolute; right:-6px; top:10px; bottom:10px; width:10px;
   background:repeating-linear-gradient(180deg, var(--paper), var(--paper) 2px, var(--paper-shadow) 3px, var(--paper) 4px);
   border-radius:0 4px 4px 0;
@@ -336,7 +324,6 @@ h1,h2,h3,.display{
   gap:6px;
 }
 .spread::before{
-  /* center spine shadow */
   content:''; position:absolute; left:50%; top:14px; bottom:14px; width:44px;
   transform:translateX(-50%);
   background:linear-gradient(90deg, transparent, rgba(0,0,0,0.35), transparent);
@@ -353,7 +340,6 @@ h1,h2,h3,.display{
 .page.left{border-radius:4px 2px 2px 4px;}
 .page.right{border-radius:2px 4px 4px 2px;}
 .page::before{
-  /* deckled paper texture edge */
   content:''; position:absolute; inset:0;
   background:
     radial-gradient(circle at 8% 12%, rgba(0,0,0,0.03) 0, transparent 3px),
@@ -589,7 +575,6 @@ h1,h2,h3,.display{
 .reader-nav button:disabled{opacity:0.3; cursor:default;}
 .reader-nav button:disabled:hover{color:var(--ink-soft);}
 
-/* ---------- responsive ---------- */
 /* ---------- responsive & mobile view fix ---------- */
 @media (max-width:760px){
   .spread{
@@ -600,7 +585,7 @@ h1,h2,h3,.display{
   }
   .spread::before{display:none !important;}
 
-  /* THIS FIXES MOBILE: Force BOTH left (main blog content) AND right (comments) pages to display */
+  /* Force BOTH left (main blog content) AND right (comments) pages to display */
   .page.left, .page.right {
     display:block !important;
     width:100% !important;
@@ -633,18 +618,11 @@ h1,h2,h3,.display{
   }
 }
 </style>
-</style>
 </head>
 <body>
 
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
-<!-- ---------- Animated Background Scene ---------- -->
-<!-- ---------- Animated Background Scene ---------- -->
-<!-- ---------- Animated Background Scene ---------- -->
-<!-- ---------- Animated Background Scene ---------- -->
-<!-- ---------- Animated Background Scene ---------- -->
-<!-- ---------- Animated Background Scene ---------- -->
 <!-- ---------- Animated Background Scene ---------- -->
 <div class="ambient" id="ambientBg" aria-hidden="true">
   <!-- Sun Rising Element -->
@@ -660,7 +638,7 @@ h1,h2,h3,.display{
   <!-- Natural Layered Grass Field with Girl Tucked Inside -->
   <div class="natural-grass-scene">
     
-    <!-- Back Grass Layer (Darker green blades) -->
+    <!-- Back Grass Layer -->
     <svg class="grass-layer grass-back" viewBox="0 0 1200 160" preserveAspectRatio="none">
       <path d="M0,160 L0,80 
                C15,40 25,90 40,30 C55,80 65,20 80,70 C95,35 105,85 120,40 
@@ -675,12 +653,12 @@ h1,h2,h3,.display{
                L1200,160 Z" fill="#2d6a4f"/>
     </svg>
 
-    <!-- Girl Lying Down Reading (Middle Sandwich Layer) -->
+    <!-- Girl Lying Down Reading -->
     <div class="girl-reading-wrapper">
       <img src="girl reading.png" onerror="this.onerror=null; this.src='girl reading.jpg';" alt="Girl reading a book" class="girl-img" />
     </div>
 
-    <!-- Front Grass Layer (Bright green blades overlapping the girl) -->
+    <!-- Front Grass Layer -->
     <svg class="grass-layer grass-front" viewBox="0 0 1200 140" preserveAspectRatio="none">
       <path d="M0,140 L0,50 
                C10,15 20,65 30,10 C45,60 55,20 70,70 C80,25 95,75 110,15 
@@ -697,12 +675,13 @@ h1,h2,h3,.display{
 
   </div>
 </div>
-</div><!-- ============ COVER ============ -->
+
+<!-- ============ COVER ============ -->
 <section id="cover">
   <div class="book-cover">
     <div class="cover-ornament">✦</div>
     <h1 class="cover-title">Reflections<br><em>a journal</em></h1>
-<p class="cover-sub">A door into my mind</p>
+    <p class="cover-sub">A door into my mind</p>
     <button class="open-btn" id="openBookBtn">Open the book</button>
     <div class="wax-seal">S</div>
   </div>
@@ -745,11 +724,6 @@ h1,h2,h3,.display{
 <section id="reader" class="hidden"></section>
 
 <script>
-/* ============================================================
-   Posts and about text are no longer written in this file.
-   They live in content/posts.json and content/about.json,
-   which you edit through the CMS at yoursite.com/admin
-   ============================================================ */
 let POSTS = [];
 
 function slugify(title){
@@ -814,6 +788,8 @@ function openPost(index){
   const reader = document.getElementById('reader');
   const paragraphs = post.content ? post.content.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('') : '';
   const photo = post.image ? `<img class="reader-photo" src="${post.image}" alt="">` : '';
+  const postId = post.id || index;
+  const postTitle = (post.title || '').replace(/"/g, '&quot;');
 
   reader.innerHTML = `
     <div style="position:relative; width:100%; display:flex; flex-direction:column; align-items:center;">
@@ -838,15 +814,13 @@ function openPost(index){
             <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:12px;">Leave a thought on Chapter ${index + 1}:</p>
             
             <!-- Comment Section Widget -->
-  <!-- Comment Section Widget -->
-<div id="cusdis_thread"
-  data-host="https://cusdis.com"
-  data-app-id="f1238cce-d24d-477c-9411-e5c37bf8fe15"
-  data-page-id="${post.id || index}"
-  data-page-url="https://dog-eared.netlify.app/#post-${post.id || index}"
-  data-page-title="${post.title}"
-></div>
-<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+            <div id="cusdis_thread"
+              data-host="https://cusdis.com"
+              data-app-id="f1238cce-d24d-477c-9411-e5c37bf8fe15"
+              data-page-id="${postId}"
+              data-page-url="https://dog-eared.netlify.app/#post-${postId}"
+              data-page-title="${postTitle}"
+            ></div>
           </div>
 
           <div class="reader-nav" style="position:absolute; bottom:30px; left:42px; right:42px;">
@@ -860,6 +834,20 @@ function openPost(index){
   document.getElementById('book').classList.add('hidden');
   reader.classList.remove('hidden');
   
+  // Re-initialize Cusdis widget dynamically for the newly loaded post
+  if (window.CUSDIS) {
+    window.CUSDIS.initial();
+  } else {
+    const existingScript = document.getElementById('cusdis-script');
+    if (existingScript) existingScript.remove();
+    const script = document.createElement('script');
+    script.id = 'cusdis-script';
+    script.async = true;
+    script.defer = true;
+    script.src = 'https://cusdis.com/js/cusdis.es.js';
+    document.body.appendChild(script);
+  }
+
   document.getElementById('readerBack').addEventListener('click', closeReader);
   const prevBtn = document.getElementById('prevPost');
   const nextBtn = document.getElementById('nextPost');
@@ -898,16 +886,8 @@ document.getElementById('closeBookBtn').addEventListener('click', () => {
   document.getElementById('cover').scrollIntoView({behavior:'instant'});
 });
 
-document.getElementById('closeBookBtn').addEventListener('click', () => {
-  document.getElementById('book').classList.add('hidden');
-  document.getElementById('cover').classList.remove('opening','gone');
-  document.getElementById('cover').scrollIntoView({behavior:'instant'});
-});
-
 loadContent();
 
-/* Lets a "write a new entry" click take you straight to login,
-   and sends you back to the editor after you log in the first time */
 if (window.netlifyIdentity) {
   window.netlifyIdentity.on('init', user => {
     if (!user) {
